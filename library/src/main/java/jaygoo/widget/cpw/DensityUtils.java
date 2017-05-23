@@ -7,7 +7,12 @@ import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
- * Created by JayGoo on 16/9/5.
+ * ================================================
+ * 作    者：JayGoo
+ * 版    本：1.1.0
+ * 创建日期：16/9/5
+ * 描    述: 尺寸转换工具类
+ * ================================================
  */
 public class DensityUtils {
 

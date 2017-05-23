@@ -6,25 +6,24 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * ================================================
  * 作    者：JayGoo
- * 版    本：1.1.0
+ * 版    本：1.0.0
  * 创建日期：2017/5/22
- * 描    述:
+ * 描    述: item，目前根据TextView改写，也可以使用自己设计的View
  * ================================================
  */
 public class ClickableTextView extends android.support.v7.widget.AppCompatTextView{
-    private Paint mPaint;
     private int mHeight;
-    private float mDivHeight;
-    private int mDivColor;
-
 
     public ClickableTextView(Context context) {
         super(context);
@@ -54,46 +53,46 @@ public class ClickableTextView extends android.support.v7.widget.AppCompatTextVi
         setTextSize(textSize);
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawLine(0,getHeight() - mDivHeight,getWidth(),getHeight(),mPaint);
-    }
 
     private void init(){
 
         // set default value
         mHeight = DensityUtils.dip2px(52,getContext());
-        mDivHeight = DensityUtils.dip2px(3,getContext());
-        mDivColor = Color.parseColor("#dedede");
+
         setTextSize(16);
         setTextColor(Color.parseColor("#333333"));
         setBackgroundColor(Color.WHITE);
-
-        mPaint = new Paint();
-        mPaint.setColor(mDivColor);
-        mPaint.setAntiAlias(true);
         setGravity(Gravity.CENTER);
+
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(MATCH_PARENT,mHeight);
         setLayoutParams(params);
+
     }
+
 
     public void setHeight(int height){
-        mHeight = height;
-    }
-
-    public void setDivHeight(float divHeight){
-        mDivHeight = divHeight;
-    }
-
-    public void setDivColor(int divColor){
-        mDivColor = divColor;
-        if (mPaint != null){
-            mPaint.setColor(mDivColor);
+        mHeight = DensityUtils.dip2px(height,getContext());
+        ViewGroup.LayoutParams params = getLayoutParams();
+        if (params != null) {
+            params.height = mHeight;
+            setLayoutParams(params);
         }
     }
 
+    public void setPadding(float dp){
+        int padding = DensityUtils.dip2px(dp,getContext());
+        setPadding(padding,padding,padding,padding);
+    }
 
+    public boolean setWrapContent(){
+        ViewGroup.LayoutParams params = getLayoutParams();
+        if (params != null){
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            setLayoutParams(params);
+            return true;
+        }
+        return false;
+    }
 
 
 }

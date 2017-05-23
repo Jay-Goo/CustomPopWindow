@@ -10,6 +10,6 @@ import android.view.View;
  * 描    述:
  * ================================================
  */
-public abstract class OnItemClickListener {
-    public void onClick(ClickableTextView view){};
+public abstract class OnPopItemClickListener {
+    public void onClick(View view){};
 }

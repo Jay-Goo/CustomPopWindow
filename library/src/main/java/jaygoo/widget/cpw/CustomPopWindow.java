@@ -11,9 +11,9 @@ import android.widget.PopupWindow;
 /**
  * ================================================
  * 作    者：JayGoo
- * 版    本：1.1.0
+ * 版    本：1.0.0
  * 创建日期：2017/5/22
- * 描    述:
+ * 描    述: 纯代码生成opWindow
  * ================================================
  */
 public class CustomPopWindow {
@@ -28,15 +28,13 @@ public class CustomPopWindow {
     }
 
     private void initPopWindow() {
-        if (mBuilder.layoutId != 0){
-            popView = (LinearLayout) View.inflate(mBuilder.mActivity, mBuilder.layoutId, null);
-        }else {
-            popView = new LinearLayout(mBuilder.mActivity);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            popView.setLayoutParams(params);
-            popView.setOrientation(LinearLayout.VERTICAL);
-        }
+        if (mBuilder.mActivity == null)return;
+        popView = new LinearLayout(mBuilder.mActivity);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        popView.setLayoutParams(params);
+        popView.setOrientation(LinearLayout.VERTICAL);
+
         mPopupWindow = new PopupWindow(popView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setAnimationStyle(mBuilder.animationStyle == 0 ? R.style.popwindow_anim_style : mBuilder.animationStyle);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
@@ -53,7 +51,14 @@ public class CustomPopWindow {
         });
     }
 
-    public CustomPopWindow addItem(final ClickableTextView ctv, final OnItemClickListener listener){
+    public CustomPopWindow addItem(final View ctv){
+        if (popView != null) {
+            popView.addView(ctv);
+        }
+        return this;
+    }
+
+    public CustomPopWindow addItem(final View ctv, final OnPopItemClickListener listener){
         if (popView != null) {
             popView.addView(ctv);
             ctv.setOnClickListener(new View.OnClickListener() {
@@ -69,32 +74,34 @@ public class CustomPopWindow {
         return this;
     }
 
-    public CustomPopWindow addItem(final ClickableTextView ctv, final boolean dismissable, final OnItemClickListener listener){
-        if (popView != null) {
-            popView.addView(ctv);
-            ctv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onClick(ctv);
-                    }
-                    if (dismissable) {
-                        dismiss();
-                    }
-                }
-            });
-        }
+    public CustomPopWindow addDivider(int color,float dp){
+        if (mBuilder.mActivity == null || popView == null)return this;
+        DividerView dividerView = new DividerView(mBuilder.mActivity.getApplicationContext(),color,dp);
+        popView.addView(dividerView);
         return this;
     }
+
+    public CustomPopWindow addDivider(int color){
+        return addDivider(color,0.5f);
+    }
+
 
     public View getContentView(){
         return popView;
     }
 
-    public void setBackgroundColor(int color){
+    public CustomPopWindow setBackgroundColor(int color){
         if (popView != null){
             popView.setBackgroundColor(color);
         }
+        return this;
+    }
+
+    public CustomPopWindow setOutsideTouchable(boolean isOutsideTouchable){
+        if (mPopupWindow != null) {
+            mPopupWindow.setOutsideTouchable(isOutsideTouchable);
+        }
+        return this;
     }
 
     public void show(View showLocationView){
@@ -107,8 +114,6 @@ public class CustomPopWindow {
     public void dismiss(){
         try {
             mPopupWindow.dismiss();
-
-
         }catch (NullPointerException e){
             e.printStackTrace();
         }
@@ -133,12 +138,7 @@ public class CustomPopWindow {
 
     public static class Builder{
         private Activity mActivity;
-        private int layoutId;
         private int animationStyle;
-
-        public void setLayoutId(int layoutId) {
-            this.layoutId = layoutId;
-        }
 
         public void setAnimationStyle(int animationStyle) {
             this.animationStyle = animationStyle;
