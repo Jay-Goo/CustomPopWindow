@@ -25,17 +25,17 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class ClickableTextView extends android.support.v7.widget.AppCompatTextView{
     private int mHeight;
 
-    public ClickableTextView(Context context) {
+    private ClickableTextView(Context context) {
         super(context);
         init();
     }
 
-    public ClickableTextView(Context context, @Nullable AttributeSet attrs) {
+    private ClickableTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ClickableTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    private ClickableTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -46,13 +46,44 @@ public class ClickableTextView extends android.support.v7.widget.AppCompatTextVi
         setText(text);
     }
 
-    public ClickableTextView(Context context, String text,int textSize){
+    public ClickableTextView(Context context, String text,int textColor){
+        super(context);
+        init();
+        setText(text);
+        setTextColor(textColor);
+    }
+
+    public ClickableTextView(Context context, String text,float textSize){
         super(context);
         init();
         setText(text);
         setTextSize(textSize);
     }
 
+    public ClickableTextView(Context context, String text,int textSize,int textColor){
+        super(context);
+        init();
+        setText(text);
+        setTextSize(textSize);
+        setTextColor(textColor);
+    }
+
+    public ClickableTextView(Context context, String text,int textSize,float dpHeight){
+        super(context);
+        init();
+        setText(text);
+        setTextSize(textSize);
+        mHeight = DensityUtils.dip2px(dpHeight,getContext());
+    }
+
+    public ClickableTextView(Context context, String text,int textSize,float dpHeight,int textColor){
+        super(context);
+        init();
+        setText(text);
+        setTextSize(textSize);
+        setTextColor(textColor);
+        mHeight = DensityUtils.dip2px(dpHeight,getContext());
+    }
 
     private void init(){
 

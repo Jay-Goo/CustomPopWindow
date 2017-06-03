@@ -64,10 +64,10 @@ public class CustomPopWindow {
             ctv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    dismiss();
                     if (listener != null) {
                         listener.onClick(ctv);
                     }
-                    dismiss();
                 }
             });
         }
